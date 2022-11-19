@@ -465,7 +465,7 @@ function LixfloraPickerStart() {
         if(activeObj != null) {
             e.preventDefault();
             e.stopImmediatePropagation();
-            activeObj.pointerMove(e.touches[0].clientY);
+            activeObj.pointerMove(e.touches[0].clientX, e.touches[0].clientY);
         }
     }, { passive: false });
     window.addEventListener("mouseup", function(e) {
