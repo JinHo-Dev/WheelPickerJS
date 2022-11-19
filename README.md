@@ -1,5 +1,6 @@
 # LixfloraPicker
 Apple-Style Picker to your web
+<img src="./screenshot.jpg" width="220">
 
 # How to apply
 1. Inject the script to you project
