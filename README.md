@@ -8,19 +8,19 @@ Apple-Style Picker to your web
 4. Execute the function: LixfloraPickerStart();
 
 # Example
-&lt;div class="LixfloraPicker" style="height: 160px; width: 200px;"&gt; 
-    &lt;select&gt; 
-        &lt;option&gt; 1 &lt;/option&gt;
-        &lt;option selected&gt; 2 &lt;/option&gt;
-        &lt;option&gt; 3 &lt;/option&gt;
-    &lt;/select&gt; 
-    &lt;select infinite&gt; 
-        &lt;option&gt; A &lt;/option&gt;
-        &lt;option&gt; B &lt;/option&gt;
-        &lt;option&gt; C &lt;/option&gt;
-    &lt;/select&gt; 
-&lt;/div&gt; 
-&lt;script&gt; LixfloraPickerStart(); &lt;/script&gt; 
+<div class="LixfloraPicker" style="height: 160px; width: 200px;"> 
+    <select> 
+        <option> 1 </option>
+        <option selected> 2 </option>
+        <option> 3 </option>
+    </select> 
+    <select infinite> 
+        <option> A </option>
+        <option> B </option>
+        <option> C </option>
+    </select> 
+</div> 
+<script> LixfloraPickerStart(); </script> 
 
 # Sample
 See "sample.htm" file
