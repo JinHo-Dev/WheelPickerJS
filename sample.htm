@@ -1,0 +1,126 @@
+﻿<style>
+#ex1 {
+    width: 220px;
+    height: 160px;
+    background: #f3f3f5;
+    border-radius: 10px;
+}
+select {
+    display: none;
+}
+</style>
+<h2>LixfloraPicker</h2>
+<h3>This is a sample page for LixfloraPicker</h3>
+<div id="ex1" class="LixfloraPicker">
+<select>
+<option>2018</option>
+<option>2019</option>
+<option>2020</option>
+<option>2021</option>
+<option selected>2022</option>
+</select>
+<select infinite>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+<option selected>11</option>
+<option>12</option>
+</select>
+<select infinite>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+<option>11</option>
+<option>12</option>
+<option>13</option>
+<option>14</option>
+<option>15</option>
+<option>16</option>
+<option>17</option>
+<option>18</option>
+<option>19</option>
+<option selected>20</option>
+<option>21</option>
+<option>22</option>
+<option>23</option>
+<option>24</option>
+<option>25</option>
+<option>26</option>
+<option>27</option>
+<option>28</option>
+<option>29</option>
+<option>30</option>
+<option>31</option>
+</select>
+</div>
+
+<h3>What's this?</h3>
+<p>
+This is Apple-Style picker performs as multiple &lt;select&gt<br>
+As you see, It's virtually rolled-up<br>
+You can drag, touch, wheel or just click to select things you want<br>
+It is made of pure javascript
+</p>
+
+<h3>How do I APPLY this?</h3>
+<p>
+[Step1] Go get LixfloraPicker script from my github: <a href="https://github.com/JinHo-Dev/LixfloraPicker"><b>Link</b></a><br>
+[Step2] Make a div object whose height is 160px and class is LixfloraPicker <br>
+[Step3] Make your own &lt;select&gt; objects inside the div <br>
+[Step4] Execute the function: LixfloraPickerStart(); <br>
+[Example]
+<pre>
+&lt;div class="LixfloraPicker" style="height: 160px; width: 200px;"&gt; 
+    &lt;select&gt; 
+        &lt;option&gt; 1 &lt;/option&gt;
+        &lt;option selected&gt; 2 &lt;/option&gt;
+        &lt;option&gt; 3 &lt;/option&gt;
+    &lt;/select&gt; 
+    &lt;select infinite&gt; 
+        &lt;option&gt; A &lt;/option&gt;
+        &lt;option&gt; B &lt;/option&gt;
+        &lt;option&gt; C &lt;/option&gt;
+    &lt;/select&gt; 
+&lt;/div&gt; 
+&lt;script&gt; LixfloraPickerStart(); &lt;/script&gt; 
+</pre>
+</p>
+
+<h3>How can I get the values?</h3>
+<p>
+Just by getting the value of original &lt;select&gt;, you can get updated value
+</p>
+
+<h3>I want to update the lists of select option</h3>
+<p>
+Just modify options of original &lt;select&gt; <br>
+Then execute: [LixfloraPicker object's DOM].LixfloraPicker.reload([index of select]);
+</p>
+
+<h3>I want to make it scroll infinitely</h3>
+<p>
+Set attribute "infinite" to your &lt;select&gt; like &lt;select infinite&gt; 
+</p>
+
+<h3>I want to preselect the option </h3>
+<p>
+Set attribute "selected" to your &lt;option&gt; like &lt;option selected&gt; 
+</p>
+
+
+<script src="LixfloraPicker.min.js"></script>
+<script async>LixfloraPickerStart();</script>
