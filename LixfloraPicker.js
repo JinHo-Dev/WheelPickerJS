@@ -18,8 +18,8 @@ class LixfloraPicker {
         const x = this.boundaries[nth];
         const num = Math.floor((this.scrollTop[nth]) / 32);
         let delta = - (this.scrollTop[nth] - 32 * num);
-        if(this.lastNum == num) {
-            // this.lastDelta;
+        if(this.lastNum[nth] == num) {
+            // this.lastDelta[nth];
         }
         for(let i = 0; i <= 6; i++) {
             let text;
@@ -48,16 +48,18 @@ class LixfloraPicker {
             let t = (this.boundaries[nth+1] + x)/2 * this.dpi;
             this.plane.fillText(text, Math.round(t), Math.round((-8 + 32 * i + delta) * this.dpi));
         }
+        this.lastNum[nth] = num;
     }
     roll(nth) {
         const left = this.boundaries[nth];
         const right = this.boundaries[nth+1];
         const LEFT = Math.round(left * this.dpi);
         const RIGHT = Math.round(right * this.dpi);
+        /*
+        let fny = this.fn[0];
         let planeData = this.plane.getImageData(LEFT, 0, RIGHT - LEFT, this.HEIGHT);
         let circularData = this.circular.getImageData(LEFT, 0, RIGHT - LEFT, this.HEIGHT);
         let x = 0, y = 0, X, Y, Z;
-        let fny = this.fn[0];
         for(let i = 0; 4 * i < circularData.data.length; i++, x++) {
             if(x == RIGHT - LEFT) {
                 x = 0;
@@ -79,7 +81,28 @@ class LixfloraPicker {
             circularData.data[I++] = Math.round(Z * planeData.data[4 * i + 3]);
         }
         this.circular.putImageData(circularData, LEFT, 0);
-        this.circular.putImageData(this.plane.getImageData(LEFT, 64*this.dpi, RIGHT - LEFT, 32*this.dpi), LEFT, 64 * this.dpi);
+        */
+
+        this.linen.clearRect(LEFT, 0, RIGHT-LEFT, this.HEIGHT);
+        this.circular.clearRect(LEFT, 0, RIGHT-LEFT, this.HEIGHT);
+        let visited = new Array(this.HEIGHT);
+        for(let y = 0; y < this.HEIGHT; y++) {
+            let fny = this.fn[y];
+            let Y = Math.round(this.HEIGHT/2 + (fny*0.2+0.8) * (y-this.HEIGHT/2));
+            if(visited[Y] == 1) continue;
+            else if(Y < this.dpi * 96 && Y > this.dpi * 64) {
+                 continue;
+            }
+            else visited[Y] = 1;
+            let X = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*(LEFT-this.WIDTH/2) );
+            let X1 = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*(RIGHT-this.WIDTH/2) );
+            let Z = fny * 0.7;
+            this.linen.globalAlpha = Z;
+            this.linen.drawImage(this.planeDOM, LEFT, y, RIGHT-LEFT, 1, X, Y, X1 - X, 1);
+        }
+        this.linen.globalAlpha = 1;
+        this.linen.drawImage(this.planeDOM, LEFT, 64 * this.dpi, RIGHT-LEFT, 32 * this.dpi, LEFT, 64 * this.dpi, RIGHT-LEFT, 32 * this.dpi);
+        this.circular.drawImage(this.linenDOM, LEFT, 0, RIGHT-LEFT, this.HEIGHT, LEFT, 0, RIGHT-LEFT, this.HEIGHT);
     }
     constructor(parent) {
         this.parent = parent;
@@ -112,10 +135,11 @@ class LixfloraPicker {
         }
         this.dpi = window.devicePixelRatio;
         this.scrollTop = new Array(this.lists.length);
+        this.lastNum = new Array(selectDOMs.length);
         for(let i = 0; i < this.lists.length; i++) {
             this.scrollTop[i] = this.selecteds[i] * 32 - 96;
+            this.lastNum[i] = Math.floor(this.scrollTop[i] / 32);
         }
-        this.lastNum = Math.floor(this.scrollTop / 32);
         this.lastDelta = this.scrollTop % 32;
         this.width = parent.offsetWidth;
         this.height = 160;
@@ -126,14 +150,16 @@ class LixfloraPicker {
             this.fn[i] = Math.sin(Math.PI / 2 * i / this.dpi / 80);
         }
         this.planeDOM = document.createElement("canvas");
-        this.plane = this.planeDOM.getContext("2d", {willReadFrequently: true, antialias: false});
+        this.plane = this.planeDOM.getContext("2d", {willReadFrequently: false, antialias: false});
+        this.planeDOM.width = this.WIDTH;
+        this.planeDOM.height = this.HEIGHT;
+        this.linenDOM = document.createElement("canvas");
+        this.linen = this.linenDOM.getContext("2d", {willReadFrequently: false, antialias: false});
+        this.linenDOM.width = this.WIDTH;
+        this.linenDOM.height = this.HEIGHT;
         this.circularDOM = document.createElement("canvas");
         parent.appendChild(this.circularDOM);
         this.circular = this.circularDOM.getContext("2d");
-        this.planeDOM.style.width = this.width + "px";
-        this.planeDOM.width = this.WIDTH;
-        this.planeDOM.style.height = this.height + "px";
-        this.planeDOM.height = this.HEIGHT;
         this.circularDOM.style.width = this.width + "px";
         this.circularDOM.width = this.WIDTH;
         this.circularDOM.style.height = this.height + "px";
@@ -235,7 +261,7 @@ class LixfloraPicker {
         this.scrollTop[nth] += d;
         this.draw(nth);
     }
-    goto(x, d) {
+    goto(x, cnt) {
         let nth;
         if(x == -1) {
             nth = this.nth;
@@ -249,6 +275,15 @@ class LixfloraPicker {
                 }
             }
         }
+        let d;
+        if(this.infinites[nth] == 0 && this.selecteds[nth] + cnt < 0) {
+            d = - 96;
+        }
+        else if(this.infinites[nth] == 0 && this.selecteds[nth] + cnt >= this.lists[nth].length) {
+            d = ((this.lists[nth].length - 1) * 32 - 96);
+        }
+        else d = ((this.selecteds[nth] + cnt) * 32 - 96);
+        d -= this.scrollTop[nth];
         let c = this.scrollTop[nth];
         this.interv[nth] = clearInterval(this.interv[nth]);
         this.lastTime[nth] = new Date() - 0;
@@ -348,15 +383,15 @@ class LixfloraPicker {
             if(velocity > 0) {
                 this.scrollTop[nth] += -velocity * t;
                 this.draw(nth);
-                velocity = velocity - this.accel * t;
-                if(this.scrollTop[nth] < -96 && this.infinites[nth] == 0) velocity = velocity - this.accel * (-this.scrollTop[nth] - 96) * t;
+                if(this.scrollTop[nth] < -96 && this.infinites[nth] == 0) velocity = velocity - this.accel * ((-this.scrollTop[nth] - 96) / 2 + 1) * t;
+                else velocity = velocity - this.accel * t;
                 if(velocity < 0) velocity = 0;
             }
             else if(velocity < 0) {
                 this.scrollTop[nth] += -velocity * t;
                 this.draw(nth);
-                velocity = velocity + this.accel * t;
-                if(this.scrollTop[nth] > this.lists[nth].length * 32 - 128 && this.infinites[nth] == 0) velocity = velocity + this.accel * (this.scrollTop[nth] - this.lists[nth].length * 32 + 128) * t;
+                if(this.scrollTop[nth] > this.lists[nth].length * 32 - 128 && this.infinites[nth] == 0) velocity = velocity + this.accel * ((this.scrollTop[nth] - this.lists[nth].length * 32 + 128) / 2 + 1) * t;
+                else velocity = velocity + this.accel * t;
                 if(velocity > 0) velocity = 0;
             }
             else if(velocity == 0){
@@ -394,25 +429,17 @@ class LixfloraPicker {
             if(this.isClick == 0) return;
             let t = this.firstY - rect.top;
             if(t < 36) {
-                this.selecteds[this.nth] -= 2;
+                this.goto(-1, -2);
             }
             else if(t < 64) {
-                this.selecteds[this.nth] -= 1;
+                this.goto(-1, -1);
             }
             else if(t >= 124) {
-                this.selecteds[this.nth] += 2;
+                this.goto(-1, 2);
             }
             else if(t >= 96) {
-                this.selecteds[this.nth] += 1;
+                this.goto(-1, 1);
             }
-            if(this.infinites[this.nth] == 0 && this.selecteds[this.nth] < 0) {
-                this.selecteds[this.nth] = 0;
-            }
-            else if(this.infinites[this.nth] == 0 && this.selecteds[this.nth] >= this.lists[this.nth].length) {
-                this.selecteds[this.nth] = this.lists[this.nth].length - 1;
-            }
-            this.selecteds[this.nth] = (this.lists[this.nth].length + this.selecteds[this.nth] % this.lists[this.nth].length) % this.lists[this.nth].length;
-            this.goto(-1, (this.selecteds[this.nth] * 32 - 96) - this.scrollTop[this.nth]);
         }
         else {
             let speed;
