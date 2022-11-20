@@ -43,7 +43,7 @@ class LixfloraPicker {
                 text = '';
             }
             this.plane.font = Math.round(22 * this.dpi) +"px sans-serif";
-            this.plane.fillStyle = "rgb(0, 0, 0)";
+            this.plane.fillStyle = this.color;
             this.plane.textAlign = "center";
             let t = (this.boundaries[nth+1] + x)/2 * this.dpi;
             this.plane.fillText(text, Math.round(t), Math.round((-8 + 32 * i + delta) * this.dpi));
@@ -70,7 +70,7 @@ class LixfloraPicker {
                 }
                 fny = this.fn[y];
                 Y = Math.round(this.HEIGHT/2 + (fny*0.2+0.8) * (y-this.HEIGHT/2));
-                Z = fny * 0.7;
+                Z = fny * 0.4;
             }
             // if(planeData.data[4 * i + 3] == 0) continue;
             X = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*((x+LEFT)-(this.WIDTH/2)) ) - LEFT;
@@ -106,6 +106,8 @@ class LixfloraPicker {
     }
     constructor(parent) {
         this.parent = parent;
+        this.color = window.getComputedStyle(parent).color;
+        this.background = window.getComputedStyle(parent).backgroundColor;
         this.timeNpos = [[0,0],[0,0]];
         let selectDOMs = parent.getElementsByTagName("select");
         this.selectDOMs = selectDOMs;
@@ -168,8 +170,14 @@ class LixfloraPicker {
         this.glassDOM.style.width = this.width - 20 + "px";
         this.glassDOM.style.height = "32px";
         this.glassDOM.style.marginTop = "-96px";
-        this.glassDOM.style.borderTop = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
-        this.glassDOM.style.borderBottom = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
+        if(this.background.split(",")[0].split("(")[1] > 140) {
+            this.glassDOM.style.borderTop = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
+            this.glassDOM.style.borderBottom = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
+        }
+        else {
+            this.glassDOM.style.borderTop = "solid " +(1/this.dpi)+ "px rgba(255,255,255,0.3)";
+            this.glassDOM.style.borderBottom = "solid " +(1/this.dpi)+ "px rgba(255,255,255,0.3)";
+        }
         this.glassDOM.style.boxSizing = "border-box";
         this.glassDOM.style.marginLeft = "10px";
         this.glassDOM.style.marginRight = "10px";
@@ -216,6 +224,16 @@ class LixfloraPicker {
         this.drawAll();
     }
     reloadAll() {
+        this.color = window.getComputedStyle(this.parent).color;
+        this.background = window.getComputedStyle(this.parent).backgroundColor;
+        if(this.background.split(",")[0].split("(")[1] > 140) {
+            this.glassDOM.style.borderTop = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
+            this.glassDOM.style.borderBottom = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
+        }
+        else {
+            this.glassDOM.style.borderTop = "solid " +(1/this.dpi)+ "px rgba(255,255,255,0.3)";
+            this.glassDOM.style.borderBottom = "solid " +(1/this.dpi)+ "px rgba(255,255,255,0.3)";
+        }
         for(let i = 0; i < this.lists.length; i++) {
             this.reload(i);
         }
@@ -300,6 +318,10 @@ class LixfloraPicker {
                 i = (this.lists[nth].length + i%this.lists[nth].length)%this.lists[nth].length;
                 this.selecteds[nth] = i;
                 this.selectDOMs[nth].selectedIndex = i;
+                let evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                this.selectDOMs[nth].dispatchEvent(evt);
+                //this.selectDOMs[nth].onchange();
                 this.scrollTop[nth] = 32 * i - 96;
                 this.draw(nth);
             }
@@ -355,6 +377,10 @@ class LixfloraPicker {
                 i = (this.lists[nth].length + i%this.lists[nth].length)%this.lists[nth].length;
                 this.selecteds[nth] = i;
                 this.selectDOMs[nth].selectedIndex = i;
+                let evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                this.selectDOMs[nth].dispatchEvent(evt);
+                //this.selectDOMs[nth].onchange();
                 this.scrollTop[nth] = 32 * i - 96;
                 this.draw(nth);
             }
