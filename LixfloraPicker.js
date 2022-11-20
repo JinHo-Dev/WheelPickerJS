@@ -96,7 +96,7 @@ class LixfloraPicker {
             else visited[Y] = 1;
             let X = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*(LEFT-this.WIDTH/2) );
             let X1 = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*(RIGHT-this.WIDTH/2) );
-            let Z = fny * 0.7;
+            let Z = fny * 0.4;
             this.linen.globalAlpha = Z;
             this.linen.drawImage(this.planeDOM, LEFT, y, RIGHT-LEFT, 1, X, Y, X1 - X, 1);
         }
@@ -155,17 +155,21 @@ class LixfloraPicker {
         this.plane = this.planeDOM.getContext("2d", {willReadFrequently: false, antialias: false});
         this.planeDOM.width = this.WIDTH;
         this.planeDOM.height = this.HEIGHT;
+        this.planeDOM.style.imageRendering = "pixelated";
         this.linenDOM = document.createElement("canvas");
         this.linen = this.linenDOM.getContext("2d", {willReadFrequently: false, antialias: false});
         this.linenDOM.width = this.WIDTH;
         this.linenDOM.height = this.HEIGHT;
+        this.linenDOM.style.imageRendering = "pixelated";
         this.circularDOM = document.createElement("canvas");
         parent.appendChild(this.circularDOM);
-        this.circular = this.circularDOM.getContext("2d");
+        this.circular = this.circularDOM.getContext("2d", {willReadFrequently: false, antialias: false});
         this.circularDOM.style.width = this.width + "px";
         this.circularDOM.width = this.WIDTH;
         this.circularDOM.style.height = this.height + "px";
         this.circularDOM.height = this.HEIGHT;
+        this.circularDOM.imageSmoothingEnabled = false;
+        this.circularDOM.style.imageRendering = "pixelated";
         this.glassDOM = document.createElement("div");
         this.glassDOM.style.width = this.width - 20 + "px";
         this.glassDOM.style.height = "32px";
