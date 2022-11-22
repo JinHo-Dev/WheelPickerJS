@@ -15,14 +15,27 @@ class LixfloraPicker {
         this.roll(nth);
     }
     write(nth) {
-        this.plane.drawImage(this.papyrusDOM[nth], 0, (this.scrollTop[nth] + 32) * this.dpi, this.papyrusDOM[nth].width, this.HEIGHT, this.boundaries[nth] * this.dpi, 0, this.papyrusDOM[nth].width, this.HEIGHT);
+        let dpi = this.dpi;
+        let len = this.lists[nth].length;
+        let papyrusDOM = this.papyrusDOM[nth];
+        let scrollTop = this.scrollTop[nth];
         if(this.infinites[nth] == 1) {
-            for(let i = 1; this.scrollTop[nth] + 32 + 32 * (i-1) * this.lists[nth].length < 0; i++) {
-                this.plane.drawImage(this.papyrusDOM[nth], 0, this.papyrusDOM[nth].height * i + (this.scrollTop[nth] + 32) * this.dpi, this.papyrusDOM[nth].width, (-this.scrollTop[nth] - 32) * this.dpi, this.boundaries[nth] * this.dpi, 0, this.papyrusDOM[nth].width, (-this.scrollTop[nth] - 32) * this.dpi);
+            while(scrollTop > len*32) scrollTop -= len*32;
+            while(scrollTop < 0) scrollTop += len*32;
+            this.scrollTop[nth] = scrollTop;
+            for(let i = 1; scrollTop + 32 + 32 * (i-1) * len < 0; i++) {
+                this.plane.drawImage(papyrusDOM, 0, papyrusDOM.height * i + (scrollTop + 32) * dpi, papyrusDOM.width, (-scrollTop - 32) * dpi, this.boundaries[nth] * dpi, 0, papyrusDOM.width, (-scrollTop - 32) * dpi);
             }
-            for(let i = 1; 32*(i-1)*this.lists[nth].length - this.scrollTop[nth] - 128 < 32; i++) {
-                this.plane.drawImage(this.papyrusDOM[nth], 0, 0, this.papyrusDOM[nth].width, -i * this.papyrusDOM[nth].height + (this.scrollTop[nth] + 192) * this.dpi, this.boundaries[nth] * this.dpi, i * this.papyrusDOM[nth].height - (this.scrollTop[nth] + 32) * this.dpi, this.papyrusDOM[nth].width, -i * this.papyrusDOM[nth].height + (this.scrollTop[nth] + 192) * this.dpi);
+            for(let i = 1; 32*(i-1)*len - scrollTop - 128 < 32; i++) {
+                this.plane.drawImage(papyrusDOM, 0, 0, papyrusDOM.width, -i * papyrusDOM.height + (scrollTop + 192) * dpi, this.boundaries[nth] * dpi, i * papyrusDOM.height - (scrollTop + 32) * dpi, papyrusDOM.width, -i * papyrusDOM.height + (scrollTop + 192) * dpi);
             }
+        }
+        let margin = (scrollTop + 32) * dpi;
+        if(margin < 0) {
+            this.plane.drawImage(papyrusDOM, 0, 0, papyrusDOM.width, this.HEIGHT, this.boundaries[nth] * dpi, -margin, papyrusDOM.width, this.HEIGHT);
+        }
+        else {
+            this.plane.drawImage(papyrusDOM, 0, (scrollTop + 32) * dpi, papyrusDOM.width, this.HEIGHT, this.boundaries[nth] * dpi, 0, papyrusDOM.width, this.HEIGHT);
         }
     }
     roll(nth) {
@@ -196,16 +209,6 @@ class LixfloraPicker {
         this.drawAll();
     }
     reloadAll() {
-        for(let i = 0; i < this.lists.length; i++) {
-            this.papyrusDOM[i].height = Math.round(32*this.dpi*this.lists[i].length);
-            this.papyrus[i].font = Math.round(22 * this.dpi) +"px sans-serif";
-            this.papyrus[i].fillStyle = this.color;
-            this.papyrus[i].textAlign = "center";
-            let t = (this.boundaries[i+1] - this.boundaries[i])/2 * this.dpi;
-            for(let j = 0; j< this.lists[i].length; j++) {
-                this.papyrus[i].fillText(this.lists[i][j], Math.round(t), Math.round((-8 + 32 * j + 32) * this.dpi));
-            }
-        }
         this.color = window.getComputedStyle(this.parent).color;
         this.background = window.getComputedStyle(this.parent).backgroundColor;
         this.circular.clearRect(Math.round(10*this.dpi), 64 * this.dpi, Math.round(this.WIDTH - 20*this.dpi), 1);
@@ -235,6 +238,14 @@ class LixfloraPicker {
         }
         this.selecteds[nth] = selectDOMs.selectedIndex;
         this.scrollTop[nth] = this.selecteds[nth] * 32 - 96;
+        this.papyrusDOM[nth].height = Math.round(32*this.dpi*this.lists[nth].length);
+        this.papyrus[nth].font = Math.round(22 * this.dpi) +"px sans-serif";
+        this.papyrus[nth].fillStyle = this.color;
+        this.papyrus[nth].textAlign = "center";
+        let t = (this.boundaries[nth+1] - this.boundaries[nth])/2 * this.dpi;
+        for(let j = 0; j< this.lists[nth].length; j++) {
+            this.papyrus[nth].fillText(this.lists[nth][j], Math.round(t), Math.round((-8 + 32 * j + 32) * this.dpi));
+        }
         this.draw(nth);
     }
     setNth(x) {
