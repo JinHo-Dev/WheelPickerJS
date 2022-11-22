@@ -17,14 +17,23 @@ class LixfloraPicker {
     write(nth) {
         let dpi = this.dpi;
         let len = this.lists[nth].length;
+        let mod = 32 * len;
         let papyrusDOM = this.papyrusDOM[nth];
         let scrollTop = this.scrollTop[nth];
         if(this.infinites[nth] == 1) {
-            while(scrollTop > len*32) scrollTop -= len*32;
-            while(scrollTop < 0) scrollTop += len*32;
-            this.scrollTop[nth] = scrollTop;
+            scrollTop += 96;
+            if(scrollTop < 0) {
+                scrollTop = (scrollTop % mod) + mod;
+            }
+            else if(scrollTop > 0) {
+                scrollTop %= mod;
+            }
+            scrollTop -= 96;
             for(let i = 1; scrollTop + 32 + 32 * (i-1) * len < 0; i++) {
-                this.plane.drawImage(papyrusDOM, 0, papyrusDOM.height * i + (scrollTop + 32) * dpi, papyrusDOM.width, (-scrollTop - 32) * dpi, this.boundaries[nth] * dpi, 0, papyrusDOM.width, (-scrollTop - 32) * dpi);
+                if(papyrusDOM.height <= 32 * dpi + 1 && i == 1) 
+                    this.plane.drawImage(papyrusDOM, 0, 0, papyrusDOM.width, papyrusDOM.height, this.boundaries[nth] * dpi, (-scrollTop - 64) * dpi, papyrusDOM.width, 32 * dpi);
+                else
+                    this.plane.drawImage(papyrusDOM, 0, papyrusDOM.height * i + (scrollTop + 32) * dpi, papyrusDOM.width, (-scrollTop - 32) * dpi, this.boundaries[nth] * dpi, 0, papyrusDOM.width, (-scrollTop - 32) * dpi);
             }
             for(let i = 1; 32*(i-1)*len - scrollTop - 128 < 32; i++) {
                 this.plane.drawImage(papyrusDOM, 0, 0, papyrusDOM.width, -i * papyrusDOM.height + (scrollTop + 192) * dpi, this.boundaries[nth] * dpi, i * papyrusDOM.height - (scrollTop + 32) * dpi, papyrusDOM.width, -i * papyrusDOM.height + (scrollTop + 192) * dpi);
@@ -35,7 +44,7 @@ class LixfloraPicker {
             this.plane.drawImage(papyrusDOM, 0, 0, papyrusDOM.width, this.HEIGHT, this.boundaries[nth] * dpi, -margin, papyrusDOM.width, this.HEIGHT);
         }
         else {
-            this.plane.drawImage(papyrusDOM, 0, (scrollTop + 32) * dpi, papyrusDOM.width, this.HEIGHT, this.boundaries[nth] * dpi, 0, papyrusDOM.width, this.HEIGHT);
+            this.plane.drawImage(papyrusDOM, 0, margin, papyrusDOM.width, this.HEIGHT, this.boundaries[nth] * dpi, 0, papyrusDOM.width, this.HEIGHT);
         }
     }
     roll(nth) {
