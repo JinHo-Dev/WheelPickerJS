@@ -15,73 +15,21 @@ class LixfloraPicker {
         this.roll(nth);
     }
     write(nth) {
-        const x = this.boundaries[nth];
-        const num = Math.floor((this.scrollTop[nth]) / 32);
-        let delta = - (this.scrollTop[nth] - 32 * num);
-        if(this.lastNum[nth] == num) {
-            // this.lastDelta[nth];
+        this.plane.drawImage(this.papyrusDOM[nth], 0, (this.scrollTop[nth] + 32) * this.dpi, this.papyrusDOM[nth].width, this.HEIGHT, this.boundaries[nth] * this.dpi, 0, this.papyrusDOM[nth].width, this.HEIGHT);
+        if(this.infinites[nth] == 1) {
+            for(let i = 1; this.scrollTop[nth] + 32 + 32 * (i-1) * this.lists[nth].length < 0; i++) {
+                this.plane.drawImage(this.papyrusDOM[nth], 0, this.papyrusDOM[nth].height * i + (this.scrollTop[nth] + 32) * this.dpi, this.papyrusDOM[nth].width, (-this.scrollTop[nth] - 32) * this.dpi, this.boundaries[nth] * this.dpi, 0, this.papyrusDOM[nth].width, (-this.scrollTop[nth] - 32) * this.dpi);
+            }
+            for(let i = 1; 32*(i-1)*this.lists[nth].length - this.scrollTop[nth] - 128 < 32; i++) {
+                this.plane.drawImage(this.papyrusDOM[nth], 0, 0, this.papyrusDOM[nth].width, -i * this.papyrusDOM[nth].height + (this.scrollTop[nth] + 192) * this.dpi, this.boundaries[nth] * this.dpi, i * this.papyrusDOM[nth].height - (this.scrollTop[nth] + 32) * this.dpi, this.papyrusDOM[nth].width, -i * this.papyrusDOM[nth].height + (this.scrollTop[nth] + 192) * this.dpi);
+            }
         }
-        for(let i = 0; i <= 6; i++) {
-            let text;
-            if(this.lists[nth].length > num + i && num + i >= 0) {
-                text = this.lists[nth][num + i];
-            }
-            else if(this.infinites[nth]) {
-                if(this.lists[nth].length <= num + i) {
-                    text = this.lists[nth][(num + i)%this.lists[nth].length];
-                }
-                else {
-                    for(let j = 1; 1; j++) {
-                        if(num + i + j*this.lists[nth].length >= 0) {
-                            text = this.lists[nth][num + i + j*this.lists[nth].length];
-                            break;
-                        }
-                    }
-                }
-            }
-            else {
-                text = '';
-            }
-            this.plane.font = Math.round(22 * this.dpi) +"px sans-serif";
-            this.plane.fillStyle = this.color;
-            this.plane.textAlign = "center";
-            let t = (this.boundaries[nth+1] + x)/2 * this.dpi;
-            this.plane.fillText(text, Math.round(t), Math.round((-8 + 32 * i + delta) * this.dpi));
-        }
-        this.lastNum[nth] = num;
     }
     roll(nth) {
         const left = this.boundaries[nth];
         const right = this.boundaries[nth+1];
         const LEFT = Math.round(left * this.dpi);
         const RIGHT = Math.round(right * this.dpi);
-        /*
-        let fny = this.fn[0];
-        let planeData = this.plane.getImageData(LEFT, 0, RIGHT - LEFT, this.HEIGHT);
-        let circularData = this.circular.getImageData(LEFT, 0, RIGHT - LEFT, this.HEIGHT);
-        let x = 0, y = 0, X, Y, Z;
-        for(let i = 0; 4 * i < circularData.data.length; i++, x++) {
-            if(x == RIGHT - LEFT) {
-                x = 0;
-                y++;
-                if(y == this.dpi * 64) {
-                    i += (RIGHT - LEFT) * 32 * this.dpi;
-                    y += 32 * this.dpi;
-                }
-                fny = this.fn[y];
-                Y = Math.round(this.HEIGHT/2 + (fny*0.2+0.8) * (y-this.HEIGHT/2));
-                Z = fny * 0.4;
-            }
-            // if(planeData.data[4 * i + 3] == 0) continue;
-            X = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*((x+LEFT)-(this.WIDTH/2)) ) - LEFT;
-            let I = 4 * ((RIGHT-LEFT)*Y+X);
-            circularData.data[I++] = 142;
-            circularData.data[I++] = 142;
-            circularData.data[I++] = 147;
-            circularData.data[I++] = Math.round(Z * planeData.data[4 * i + 3]);
-        }
-        this.circular.putImageData(circularData, LEFT, 0);
-        */
 
         this.linen.clearRect(LEFT, 0, RIGHT-LEFT, this.HEIGHT);
         this.circular.clearRect(LEFT, 0, RIGHT-LEFT, this.HEIGHT);
@@ -89,11 +37,15 @@ class LixfloraPicker {
         for(let y = 0; y < this.HEIGHT; y++) {
             let fny = this.fn[y];
             let Y = Math.round(this.HEIGHT/2 + (fny*0.2+0.8) * (y-this.HEIGHT/2));
-            if(visited[Y] == 1) continue;
+            if(visited[Y] == 1) {
+                continue;
+            }
             else if(Y < this.dpi * 96 && Y > this.dpi * 64) {
                  continue;
             }
-            else visited[Y] = 1;
+            else {
+                visited[Y] = 1;
+            }
             let X = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*(LEFT-this.WIDTH/2) );
             let X1 = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*(RIGHT-this.WIDTH/2) );
             let Z = fny * 0.4;
@@ -102,6 +54,14 @@ class LixfloraPicker {
         }
         this.linen.globalAlpha = 1;
         this.linen.drawImage(this.planeDOM, LEFT, 64 * this.dpi, RIGHT-LEFT, 32 * this.dpi, LEFT, 64 * this.dpi, RIGHT-LEFT, 32 * this.dpi);
+        if(this.background.split(",")[0].split("(")[1] > 140) {
+            this.linen.fillStyle = "rgba(0,0,10,0.3)";
+        }
+        else {
+            this.linen.fillStyle = "rgba(255,255,255,0.3)";
+        }
+        this.linen.fillRect(LEFT, Math.round(64 * this.dpi), RIGHT-LEFT, 1);
+        this.linen.fillRect(LEFT, Math.round(96 * this.dpi - 1), RIGHT-LEFT, 1);
         this.circular.drawImage(this.linenDOM, LEFT, 0, RIGHT-LEFT, this.HEIGHT, LEFT, 0, RIGHT-LEFT, this.HEIGHT);
     }
     constructor(parent) {
@@ -170,23 +130,14 @@ class LixfloraPicker {
         this.circularDOM.height = this.HEIGHT;
         this.circularDOM.imageSmoothingEnabled = false;
         this.circularDOM.style.imageRendering = "pixelated";
-        this.glassDOM = document.createElement("div");
-        this.glassDOM.style.width = this.width - 20 + "px";
-        this.glassDOM.style.height = "32px";
-        this.glassDOM.style.marginTop = "-96px";
         if(this.background.split(",")[0].split("(")[1] > 140) {
-            this.glassDOM.style.borderTop = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
-            this.glassDOM.style.borderBottom = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
+            this.circular.fillStyle = "rgba(0,0,10,0.3)";
         }
         else {
-            this.glassDOM.style.borderTop = "solid " +(1/this.dpi)+ "px rgba(255,255,255,0.3)";
-            this.glassDOM.style.borderBottom = "solid " +(1/this.dpi)+ "px rgba(255,255,255,0.3)";
+            this.circular.fillStyle = "rgba(255,255,255,0.3)";
         }
-        this.glassDOM.style.boxSizing = "border-box";
-        this.glassDOM.style.marginLeft = "10px";
-        this.glassDOM.style.marginRight = "10px";
-        parent.appendChild(this.glassDOM);
-
+        this.circular.fillRect(Math.round(10*this.dpi), 64 * this.dpi, Math.round(this.WIDTH - 20*this.dpi), 1);
+        this.circular.fillRect(Math.round(10*this.dpi), Math.round(96 * this.dpi - 1), Math.round(this.WIDTH - 20*this.dpi), 1);
         this.tDOM = document.createElement("div");
         this.tDOM.style.position = "absolute";
         this.tDOM.style.width = "auto";
@@ -206,38 +157,68 @@ class LixfloraPicker {
             x += mx + 32;
             this.boundaries.push(x);
         }
+        parent.removeChild(this.tDOM);
         x = (this.width - x) / 2;
         for(let i = 0; i < this.boundaries.length; i++) {
             this.boundaries[i] += x;
+        }
+        this.papyrusDOM = new Array(this.lists.length);
+        this.papyrus = new Array(this.lists.length);
+        for(let i = 0; i < this.lists.length; i++) {
+            this.papyrusDOM[i] = document.createElement("canvas");
+            this.papyrus[i] = this.papyrusDOM[i].getContext("2d", {willReadFrequently: false, antialias: false});
+            this.papyrusDOM[i].width = Math.round((this.boundaries[i+1]-this.boundaries[i])*this.dpi);
+            this.papyrusDOM[i].height = Math.round(32*this.dpi*this.lists[i].length);
+            this.papyrusDOM[i].style.imageRendering = "pixelated";
+            this.papyrus[i].font = Math.round(22 * this.dpi) +"px sans-serif";
+            this.papyrus[i].fillStyle = this.color;
+            this.papyrus[i].textAlign = "center";
+            let t = (this.boundaries[i+1] - this.boundaries[i])/2 * this.dpi;
+            for(let j = 0; j< this.lists[i].length; j++) {
+                this.papyrus[i].fillText(this.lists[i][j], Math.round(t), Math.round((-8 + 32 * j + 32) * this.dpi));
+            }
         }
         let sto;
         parent.addEventListener("wheel", function(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
             let rect = this.getBoundingClientRect();
-            this.LixfloraPicker.scroll(e.clientX - rect.left, e.deltaY / 125 * 32 / 3);
+            this.LixfloraPicker.scroll(e.clientX - rect.left, e.deltaY / 125 * 32 / 2);
             sto = clearTimeout(sto);
             sto = setTimeout(() => {
                 for(let i = 0; i < this.LixfloraPicker.scrollTop.length; i++) {
                     this.LixfloraPicker.adj(this.LixfloraPicker.boundaries[i+1]);
                 }
-            }, 300);
+            }, 400);
         });
         this.isClick = 0;
         parent.LixfloraPicker = this;
         this.drawAll();
     }
     reloadAll() {
+        for(let i = 0; i < this.lists.length; i++) {
+            this.papyrusDOM[i].height = Math.round(32*this.dpi*this.lists[i].length);
+            this.papyrus[i].font = Math.round(22 * this.dpi) +"px sans-serif";
+            this.papyrus[i].fillStyle = this.color;
+            this.papyrus[i].textAlign = "center";
+            let t = (this.boundaries[i+1] - this.boundaries[i])/2 * this.dpi;
+            for(let j = 0; j< this.lists[i].length; j++) {
+                this.papyrus[i].fillText(this.lists[i][j], Math.round(t), Math.round((-8 + 32 * j + 32) * this.dpi));
+            }
+        }
         this.color = window.getComputedStyle(this.parent).color;
         this.background = window.getComputedStyle(this.parent).backgroundColor;
+        this.circular.clearRect(Math.round(10*this.dpi), 64 * this.dpi, Math.round(this.WIDTH - 20*this.dpi), 1);
+        this.circular.clearRect(Math.round(10*this.dpi), Math.round(96 * this.dpi - 1), Math.round(this.WIDTH - 20*this.dpi), 1);
         if(this.background.split(",")[0].split("(")[1] > 140) {
-            this.glassDOM.style.borderTop = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
-            this.glassDOM.style.borderBottom = "solid " +(1/this.dpi)+ "px rgba(0,0,10,0.3)";
+            this.circular.fillStyle = "rgba(0,0,10,0.3)";
         }
         else {
-            this.glassDOM.style.borderTop = "solid " +(1/this.dpi)+ "px rgba(255,255,255,0.3)";
-            this.glassDOM.style.borderBottom = "solid " +(1/this.dpi)+ "px rgba(255,255,255,0.3)";
+            this.circular.fillStyle = "rgba(255,255,255,0.3)";
         }
+        this.circular.fillRect(Math.round(10*this.dpi), 64 * this.dpi, Math.round(this.WIDTH - 20*this.dpi), 1);
+        this.circular.fillRect(Math.round(10*this.dpi), Math.round(96 * this.dpi - 1), Math.round(this.WIDTH - 20*this.dpi), 1);
+
         for(let i = 0; i < this.lists.length; i++) {
             this.reload(i);
         }
@@ -325,7 +306,6 @@ class LixfloraPicker {
                 let evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 this.selectDOMs[nth].dispatchEvent(evt);
-                //this.selectDOMs[nth].onchange();
                 this.scrollTop[nth] = 32 * i - 96;
                 this.draw(nth);
             }
@@ -384,7 +364,6 @@ class LixfloraPicker {
                 let evt = document.createEvent("HTMLEvents");
                 evt.initEvent("change", false, true);
                 this.selectDOMs[nth].dispatchEvent(evt);
-                //this.selectDOMs[nth].onchange();
                 this.scrollTop[nth] = 32 * i - 96;
                 this.draw(nth);
             }
