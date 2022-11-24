@@ -63,7 +63,7 @@ class LixfloraPicker {
                 continue;
             }
             else if(Y < this.dpi * 96 && Y > this.dpi * 64) {
-                 continue;
+                continue;
             }
             else {
                 visited[Y] = 1;
@@ -88,12 +88,9 @@ class LixfloraPicker {
     }
     constructor(parent) {
         this.parent = parent;
-        this.color = window.getComputedStyle(parent).color;
-        this.background = window.getComputedStyle(parent).backgroundColor;
         this.timeNpos = [[0,0],[0,0]];
         let selectDOMs = parent.getElementsByTagName("select");
         this.selectDOMs = selectDOMs;
-        this.lists = new Array(selectDOMs.length);
         this.lists = new Array(selectDOMs.length);
         this.interv = new Array(selectDOMs.length);
         this.lastTime = new Array(selectDOMs.length);
@@ -107,9 +104,6 @@ class LixfloraPicker {
                 o.scrollTop[i] = o.selecteds[i] * 32 - 96;
                 o.draw(i);
             });
-            this.selecteds[i] = selectDOMs[i].selectedIndex;
-            if(selectDOMs[i].getAttribute("infinite") != null) this.infinites[i] = 1;
-            else this.infinites[i] = 0;
             let options = selectDOMs[i].getElementsByTagName("option");
             this.lists[i] = new Array(options.length);
             for(let j = 0; j < options.length; j++) {
@@ -119,12 +113,6 @@ class LixfloraPicker {
         }
         this.dpi = window.devicePixelRatio;
         this.scrollTop = new Array(this.lists.length);
-        this.lastNum = new Array(selectDOMs.length);
-        for(let i = 0; i < this.lists.length; i++) {
-            this.scrollTop[i] = this.selecteds[i] * 32 - 96;
-            this.lastNum[i] = Math.floor(this.scrollTop[i] / 32);
-        }
-        this.lastDelta = this.scrollTop % 32;
         this.width = parent.offsetWidth;
         this.height = 160;
         this.WIDTH = Math.round(this.width * this.dpi);
@@ -152,14 +140,6 @@ class LixfloraPicker {
         this.circularDOM.height = this.HEIGHT;
         this.circularDOM.imageSmoothingEnabled = false;
         this.circularDOM.style.imageRendering = "pixelated";
-        if(this.background.split(",")[0].split("(")[1] > 140) {
-            this.circular.fillStyle = "rgba(0,0,10,0.3)";
-        }
-        else {
-            this.circular.fillStyle = "rgba(255,255,255,0.3)";
-        }
-        this.circular.fillRect(Math.round(10*this.dpi), 64 * this.dpi, Math.round(this.WIDTH - 20*this.dpi), 1);
-        this.circular.fillRect(Math.round(10*this.dpi), Math.round(96 * this.dpi - 1), Math.round(this.WIDTH - 20*this.dpi), 1);
         this.tDOM = document.createElement("div");
         this.tDOM.style.position = "absolute";
         this.tDOM.style.width = "auto";
@@ -190,15 +170,7 @@ class LixfloraPicker {
             this.papyrusDOM[i] = document.createElement("canvas");
             this.papyrus[i] = this.papyrusDOM[i].getContext("2d", {willReadFrequently: false, antialias: false});
             this.papyrusDOM[i].width = Math.round((this.boundaries[i+1]-this.boundaries[i])*this.dpi);
-            this.papyrusDOM[i].height = Math.round(32*this.dpi*this.lists[i].length);
             this.papyrusDOM[i].style.imageRendering = "pixelated";
-            this.papyrus[i].font = Math.round(22 * this.dpi) +"px sans-serif";
-            this.papyrus[i].fillStyle = this.color;
-            this.papyrus[i].textAlign = "center";
-            let t = (this.boundaries[i+1] - this.boundaries[i])/2 * this.dpi;
-            for(let j = 0; j< this.lists[i].length; j++) {
-                this.papyrus[i].fillText(this.lists[i][j], Math.round(t), Math.round((-8 + 32 * j + 32) * this.dpi));
-            }
         }
         let sto;
         parent.addEventListener("wheel", function(e) {
@@ -215,7 +187,7 @@ class LixfloraPicker {
         });
         this.isClick = 0;
         parent.LixfloraPicker = this;
-        this.drawAll();
+        this.reloadAll();
     }
     reloadAll() {
         this.color = window.getComputedStyle(this.parent).color;
@@ -248,7 +220,8 @@ class LixfloraPicker {
         this.selecteds[nth] = selectDOMs.selectedIndex;
         this.scrollTop[nth] = this.selecteds[nth] * 32 - 96;
         this.papyrusDOM[nth].height = Math.round(32*this.dpi*this.lists[nth].length);
-        this.papyrus[nth].font = Math.round(22 * this.dpi) +"px sans-serif";
+        this.papyrus[nth].font = `${window.getComputedStyle(this.parent).fontWeight} ${Math.round(22 * this.dpi)}px "${window.getComputedStyle(this.parent).fontFamily}"`;
+        this.papyrus[nth].textBaseline = "center";
         this.papyrus[nth].fillStyle = this.color;
         this.papyrus[nth].textAlign = "center";
         let t = (this.boundaries[nth+1] - this.boundaries[nth])/2 * this.dpi;
@@ -484,13 +457,17 @@ class LixfloraPicker {
     }
 };
 
-
-function LixfloraPickerStart() {
+async function LixfloraPickerStart() {
     let doms = document.querySelectorAll(".LixfloraPicker");
     for(let i = 0; i < doms.length; i++) {
-        let o = new LixfloraPicker(doms[i]);
+        doms[i].innerHTML += "<font style='position:absolute;'>&nbsp;</font>";
     }
-
+    if(document.fonts) {
+        await document.fonts.ready;
+    }
+    for(let i = 0; i < doms.length; i++) {
+        new LixfloraPicker(doms[i]);
+    }
     let activeObj;
     window.addEventListener("mousedown", function(e) {
         let o = e.target.closest("div");
@@ -541,3 +518,5 @@ function LixfloraPickerStart() {
         }
     });
 }
+
+window.addEventListener("load", LixfloraPickerStart, false);

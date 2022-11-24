@@ -1,6 +1,13 @@
-﻿<meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+﻿<script src="LixfloraPicker.js"></script>
+<meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <style>
+@font-face {
+    font-family: SD;
+    src: url(SD.otf);
+}
+
 .LixfloraPicker {
+    font-family: SD;
     height: 160px;
     border-radius: 10px;
 }
@@ -94,7 +101,6 @@ It is made of pure javascript
 [Step1] Go get LixfloraPicker script from my github: <a href="https://github.com/JinHo-Dev/LixfloraPicker"><b>Link</b></a><br>
 [Step2] Make a div object whose height is 160px and class is LixfloraPicker <br>
 [Step3] Make your own &lt;select&gt; objects inside the div <br>
-[Step4] Execute the function: LixfloraPickerStart(); <br>
 [Example]
 <pre>
 &lt;div class="LixfloraPicker" style="height: 160px; width: 200px;"&gt; 
@@ -109,7 +115,6 @@ It is made of pure javascript
         &lt;option&gt; C &lt;/option&gt;
     &lt;/select&gt; 
 &lt;/div&gt; 
-&lt;script&gt; LixfloraPickerStart(); &lt;/script&gt; 
 </pre>
 </p>
 
@@ -204,6 +209,3 @@ And you can modify your options in you selects <br>
 To reflect changes, execute function: [your LixfloraPicker object].LixfloraPicker.reloadAll();
 </p>
 
-
-<script src="LixfloraPicker.min.js"></script>
-<script async>LixfloraPickerStart();</script>
