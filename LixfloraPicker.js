@@ -220,7 +220,7 @@ class LixfloraPicker {
         this.selecteds[nth] = selectDOMs.selectedIndex;
         this.scrollTop[nth] = this.selecteds[nth] * 32 - 96;
         this.papyrusDOM[nth].height = Math.round(32*this.dpi*this.lists[nth].length);
-        this.papyrus[nth].font = `${window.getComputedStyle(this.parent).fontWeight} ${Math.round(22 * this.dpi)}px "${window.getComputedStyle(this.parent).fontFamily}"`;
+        this.papyrus[nth].font = `${window.getComputedStyle(this.parent).fontWeight} ${Math.round(22 * this.dpi)}px ${window.getComputedStyle(this.parent).fontFamily}`;
         this.papyrus[nth].textBaseline = "center";
         this.papyrus[nth].fillStyle = this.color;
         this.papyrus[nth].textAlign = "center";
