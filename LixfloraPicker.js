@@ -39,12 +39,12 @@ class LixfloraPicker {
                 this.plane.drawImage(papyrusDOM, 0, 0, papyrusDOM.width, -i * papyrusDOM.height + (scrollTop + 192) * dpi, this.boundaries[nth] * dpi, i * papyrusDOM.height - (scrollTop + 32) * dpi, papyrusDOM.width, -i * papyrusDOM.height + (scrollTop + 192) * dpi);
             }
         }
-        let margin = (scrollTop + 32) * dpi;
+        let margin = (scrollTop + 0) * dpi;
         if(margin < 0) {
-            this.plane.drawImage(papyrusDOM, 0, 0, papyrusDOM.width, this.HEIGHT, this.boundaries[nth] * dpi, -margin, papyrusDOM.width, this.HEIGHT);
+            this.plane.drawImage(papyrusDOM, 0, 0, papyrusDOM.width, 224 * dpi, this.boundaries[nth] * dpi, -margin, papyrusDOM.width, 224 * dpi);
         }
         else {
-            this.plane.drawImage(papyrusDOM, 0, margin, papyrusDOM.width, this.HEIGHT, this.boundaries[nth] * dpi, 0, papyrusDOM.width, this.HEIGHT);
+            this.plane.drawImage(papyrusDOM, 0, margin, papyrusDOM.width, 224 * dpi, this.boundaries[nth] * dpi, 0, papyrusDOM.width, 224 * dpi);
         }
     }
     roll(nth) {
@@ -56,9 +56,9 @@ class LixfloraPicker {
         this.linen.clearRect(LEFT, 0, RIGHT-LEFT, this.HEIGHT);
         this.circular.clearRect(LEFT, 0, RIGHT-LEFT, this.HEIGHT);
         let visited = new Array(this.HEIGHT);
-        for(let y = 0; y < this.HEIGHT; y++) {
+        for(let y = 0; y < 224; y++) {
             let fny = this.fn[y];
-            let Y = Math.round(this.HEIGHT/2 + (fny*0.2+0.8) * (y-this.HEIGHT/2));
+            let Y = Math.round(this.HEIGHT/2 + (fny*0.2+0.71) * (y-this.HEIGHT/2) - 0 * this.dpi );
             if(visited[Y] == 1) {
                 continue;
             }
@@ -68,14 +68,14 @@ class LixfloraPicker {
             else {
                 visited[Y] = 1;
             }
-            let X = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*(LEFT-this.WIDTH/2) );
-            let X1 = Math.round( (this.WIDTH/2) + (fny*0.05+0.95)*(RIGHT-this.WIDTH/2) );
+            let X = Math.round( (this.WIDTH/2) + (fny*0.05+0.86)*(LEFT-this.WIDTH/2) + 0.045*(RIGHT+LEFT-this.WIDTH) );
+            let X1 = Math.round( (this.WIDTH/2) + (fny*0.05+0.86)*(RIGHT-this.WIDTH/2) + 0.045*(RIGHT+LEFT-this.WIDTH) );
             let Z = fny * 0.4;
             this.linen.globalAlpha = Z;
             this.linen.drawImage(this.planeDOM, LEFT, y, RIGHT-LEFT, 1, X, Y, X1 - X, 1);
         }
         this.linen.globalAlpha = 1;
-        this.linen.drawImage(this.planeDOM, LEFT, 64 * this.dpi, RIGHT-LEFT, 32 * this.dpi, LEFT, 64 * this.dpi, RIGHT-LEFT, 32 * this.dpi);
+        this.linen.drawImage(this.planeDOM, LEFT, 96 * this.dpi, RIGHT-LEFT, 32 * this.dpi, LEFT, 64 * this.dpi, RIGHT-LEFT, 32 * this.dpi);
         if(this.background.split(",")[0].split("(")[1] > 140) {
             this.linen.fillStyle = "rgba(0,0,10,0.3)";
         }
@@ -117,14 +117,15 @@ class LixfloraPicker {
         this.height = 160;
         this.WIDTH = Math.round(this.width * this.dpi);
         this.HEIGHT = Math.round(this.height * this.dpi);
-        this.fn = new Array(this.HEIGHT);
-        for(var i = 0; i < this.HEIGHT; i++){
-            this.fn[i] = Math.sin(Math.PI / 2 * i / this.dpi / 80);
+        this.fn = new Array(224);
+        for(var i = 0; i < 224; i++){
+            //this.fn[i] = Math.sin(Math.PI / 2 * i / this.dpi / 80);
+            this.fn[i] = Math.sin(Math.PI / 2 * i / this.dpi / 112);
         }
         this.planeDOM = document.createElement("canvas");
         this.plane = this.planeDOM.getContext("2d", {willReadFrequently: false, antialias: false});
         this.planeDOM.width = this.WIDTH;
-        this.planeDOM.height = this.HEIGHT;
+        this.planeDOM.height = 240;
         this.planeDOM.style.imageRendering = "pixelated";
         this.linenDOM = document.createElement("canvas");
         this.linen = this.linenDOM.getContext("2d", {willReadFrequently: false, antialias: false});
@@ -146,7 +147,7 @@ class LixfloraPicker {
         this.tDOM.style.height = "auto";
         this.tDOM.style.visibility = "hidden";
         this.tDOM.style.whiteSpace = "nowrap";
-        this.tDOM.style.fontSize = "22px";
+        this.tDOM.style.fontSize = "23px";
         parent.appendChild(this.tDOM);
         this.boundaries = [0];
         let x = 0;
@@ -220,7 +221,7 @@ class LixfloraPicker {
         this.selecteds[nth] = selectDOMs.selectedIndex;
         this.scrollTop[nth] = this.selecteds[nth] * 32 - 96;
         this.papyrusDOM[nth].height = Math.round(32*this.dpi*this.lists[nth].length);
-        this.papyrus[nth].font = `${window.getComputedStyle(this.parent).fontWeight} ${Math.round(22 * this.dpi)}px ${window.getComputedStyle(this.parent).fontFamily}`;
+        this.papyrus[nth].font = `${window.getComputedStyle(this.parent).fontWeight} ${Math.round(23 * this.dpi)}px ${window.getComputedStyle(this.parent).fontFamily}`;
         this.papyrus[nth].textBaseline = "center";
         this.papyrus[nth].fillStyle = this.color;
         this.papyrus[nth].textAlign = "center";
