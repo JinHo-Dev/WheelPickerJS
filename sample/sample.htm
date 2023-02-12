@@ -1,0 +1,463 @@
+﻿<script src="../WheelPicker.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&family=Noto+Sans+KR:wght@500;700&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<style>
+.ko-kr { display: none; }
+.en-us { display: none; }
+.ja-jp { display: none; }
+select { display: none; }
+* { font-family: 'Roboto', 'Noto Sans KR', 'Noto Sans JP', sans-serif; appearance: none; margin: 0; }
+a:link, a:visited, a:active, a:hover { text-decoration: none; }
+.WheelPicker { border-radius: 10px; }
+pre {
+font-family: monospace;
+white-space: pre;
+margin: 1em 0px;
+color: black;
+font-size: 16px;
+}
+h1 {
+height: 60px;
+line-height: 60px;
+margin: 0;
+padding: 10px;
+font-size: 32px;
+}
+h3 {
+height: 30px;
+line-height: 30px;
+margin: 0;
+padding-bottom: 20px;
+font-size: 20px;
+}
+#gitLink {
+padding-left: 10px;
+background: #F3F3F5;
+display: flex;
+align-items: center;
+position: absolute;
+top: 20px;
+right: 20px;
+height: 40px;
+width: 220px;
+border-radius: 10px;
+color: #000;
+font-size: 15px;
+overflow-x: visible;
+cursor: pointer;
+transition-duration: 0.3s;
+}
+#gitLink:hover {
+background: #FFF;
+box-shadow: 0px 10px 30px rgba(0, 0, 10, 0.16);
+}
+#gitLink > img {
+padding: 9px;
+}
+.article {
+padding: 30px;
+padding-left: 25%;
+width: 50%;
+}
+.article>p {
+font-size: 19px;
+}
+#ex1 { width: 220px; background-color: #F3F3F5; }
+#ex2 { margin-left: 25%; width: 160px; background-color: #6bf; color: white; }
+#ex3 { margin-left: 25%; width: 300px; background-color: #222; color: #eee; }
+</style>
+
+<div class="en-us">
+<center><h1>Hello, WheelPicker</h1></center>
+<center><h3>Quick Guide to WheelPicker, somehow Familiar Picker UI</h3></center>
+</div>
+
+<div class="ko-kr">
+<center><h1>WheelPicker 사용 설명서</h1></center>
+<center><h3>어딘가 익숙해보이는 선택상자 UI를 만드는 방법을 알아봅시다</h3></center>
+</div>
+
+<div class="ja-jp">
+<center><h1>WheelPickerユーザーマニュアル</h1></center>
+<center><h3>どこかに慣れている選択ボックスUIを作成する方法を学びましょう。</h3></center>
+</div>
+
+<div id="gitLink" onclick="window.open('https://github.com/JinHo-Dev/WheelPicker');"><img src="github.svg">JinHo-Dev/ WheelPicker</div>
+
+<center>
+<div id="ex1" class="WheelPicker">
+<select onchange="language(this.value)">
+<option value="ko-kr">한국어</option>
+<option value="en-us" selected>English</option>
+<option value="ja-jp">日本語</option>
+</select>
+</div>
+</center>
+
+<div class="en-us">
+<div class="article">
+<h3>What's this?</h3>
+<p>
+WheelPicker is web-based UI project that improves consistent experiencing of selecting options between various platforms. <br>
+It interacts with user by various ways: flicking, clicking and even scrolling. <br>
+Reading this document, you will find out how easy it is to apply this beautiful UI to your projects. 
+</p>
+</div>
+</div>
+
+<div class="ko-kr">
+<div class="article">
+<h3>WheelPicker 란?</h3>
+<p>
+WheelPicker는 다양한 플랫폼 간 선택상자에 대한 사용자의 일관적인 경험을 위해 만들어진 웹기반 선택상자 UI 프로젝트입니다. <br>
+터치, 클릭 및 스크롤의 다양한 방식으로 조작할 수 있습니다. <br>
+이 문서를 읽고나면, 이 세련된 UI를 어떻게 웹프로젝트에 적용할 수 있는지 알게 될 것입니다. 
+</p>
+</div>
+</div>
+
+<div class="ja-jp">
+<div class="article">
+<h3>WheelPickerとは？</h3>
+<p>
+WheelPickerは、さまざまなクロスプラットフォーム選択ボックスに対するユーザーの一貫した経験のために作成されたWebベースの選択ボックスUIプロジェクトです。 <br>
+タッチ、クリック、スクロールのさまざまな方法で操作できます。 <br>
+この記事を読んだら、このスタイリッシュなUIをどのようにWebプロジェクトに適用できるかを知ることができます。
+</p>
+</div>
+</div>
+
+<div class="en-us">
+<div class="article">
+<h3>How to apply?</h3>
+<p>
+If you know some basic HTML tags, you don't have to study new things at all. <br>
+All you have to do is making a new DIV object that contains your SELECT object. <br>
+Then name the DIV's className as "WheelPicker". <br>
+That's it!
+</p>
+</div>
+</div>
+
+<div class="ko-kr">
+<div class="article">
+<h3>적용하기</h3>
+<p>
+몇가지 간단한 HTML 태그를 사용할 줄 안다면 그것으로 충분합니다. <br>
+DIV를 하나 만들고 그 안에 원하는 SELECT 오브젝트를 구성하세요. <br>
+DIV의 클래스네임은 "WheelPicker"로 해주세요. <br>
+완성!
+</p>
+</div>
+</div>
+
+<div class="ja-jp">
+<div class="article">
+<h3>適用する</h3>
+<p>
+いくつかの簡単なHTMLタグを使用することを知っていればそれで十分です。 <br>
+DIVを1つ作成し、その中に必要なSELECTオブジェクトを設定します。 <br>
+DIVのクラス名は「WheelPicker」にしてください。 <br>
+完成！
+</p>
+</div>
+</div>
+
+<div class="en-us">
+<div class="article">
+<h3>Practical Example</h3>
+<p>
+It can combine multiple SELECT objects into one UI. <br>
+In its OPTION, "selected" attribute actually works as it is. <br>
+If you assign "infinite" attribute to the SELECT object, its options are recursive and can scroll infinitely. <br>
+Here's an example code. <br>
+<pre>
+&lt;div class="WheelPicker" style="width: 200px;"&gt; 
+    &lt;select&gt; 
+        &lt;option&gt; 1 &lt;/option&gt;
+        &lt;option selected&gt; 2 &lt;/option&gt;
+        &lt;option&gt; 3 &lt;/option&gt;
+    &lt;/select&gt; 
+    &lt;select infinite&gt; 
+        &lt;option&gt; A &lt;/option&gt;
+        &lt;option&gt; B &lt;/option&gt;
+        &lt;option&gt; C &lt;/option&gt;
+    &lt;/select&gt; 
+&lt;/div&gt; 
+</pre>
+</p>
+</div>
+</div>
+
+<div class="ko-kr">
+<div class="article">
+<h3>예시</h3>
+<p>
+SELECT 여러개를 하나로 묶을 수도 있습니다. <br>
+OPTION에 "selected" 속성을 부여하더라도 예상대로 잘 작동됩니다. <br>
+SELECT에 "infinite" 속성을 부여하면 옵션이 반복적으로 나오게 되며 무한히 스크롤 할 수 있게 됩니다. <br>
+다음은 이를 적용한 예시 코드입니다. <br>
+<pre>
+&lt;div class="WheelPicker" style="width: 200px;"&gt; 
+    &lt;select&gt; 
+        &lt;option&gt; 1 &lt;/option&gt;
+        &lt;option selected&gt; 2 &lt;/option&gt;
+        &lt;option&gt; 3 &lt;/option&gt;
+    &lt;/select&gt; 
+    &lt;select infinite&gt; 
+        &lt;option&gt; A &lt;/option&gt;
+        &lt;option&gt; B &lt;/option&gt;
+        &lt;option&gt; C &lt;/option&gt;
+    &lt;/select&gt; 
+&lt;/div&gt; 
+</pre>
+</p>
+</div>
+</div>
+
+<div class="ja-jp">
+<div class="article">
+<h3>例</h3>
+<p>
+SELECT 複数を1つにまとめることもできます。 <br>
+OPTIONに "selected"属性を付与しても、期待どおりに機能します。 <br>
+SELECTに「infinite」属性を付与すると、オプションが繰り返し出てしまい、無限にスクロールできるようになります。 <br>
+以下は、これを適用したサンプルコードです。 <br>
+<pre>
+&lt;div class="WheelPicker" style="width: 200px;"&gt; 
+    &lt;select&gt; 
+        &lt;option&gt; 1 &lt;/option&gt;
+        &lt;option selected&gt; 2 &lt;/option&gt;
+        &lt;option&gt; 3 &lt;/option&gt;
+    &lt;/select&gt; 
+    &lt;select infinite&gt; 
+        &lt;option&gt; A &lt;/option&gt;
+        &lt;option&gt; B &lt;/option&gt;
+        &lt;option&gt; C &lt;/option&gt;
+    &lt;/select&gt; 
+&lt;/div&gt; 
+</pre>
+</p>
+</div>
+</div>
+
+<div class="en-us">
+<div class="article">
+<h3>Design</h3>
+<p>
+You can change its theme by changing its style. <br>
+Try different colors to its "color" and "background-color".<br>
+Let's see in action. 
+</p>
+</div>
+</div>
+
+<div class="ko-kr">
+<div class="article">
+<h3>디자인</h3>
+<p>
+스타일을 변경하여 디자인을 바꿀 수 있습니다. <br>
+"color" 나 "background-color" 을 바꾸어 색다른 분위기로 꾸며보세요. 
+</p>
+</div>
+</div>
+
+<div class="ja-jp">
+<div class="article">
+<h3>デザイン</h3>
+<p>
+スタイルを変更してデザインを変更できます。 <br>
+「color」や「background-color」を変えて風変わりな雰囲気にしてみてください。
+</p>
+</div>
+</div>
+
+<div id="ex2" class="WheelPicker">
+<select onchange="changeTheme(this)">
+<option>SkyBlue</option>
+<option>Grass</option>
+<option>Orange</option>
+</select>
+</div>
+<script>
+function changeTheme(o) {
+if(o.value =='SkyBlue') {
+ex2.style.background = '';
+ex2.style.color = '';
+}
+else if(o.value =='Grass') {
+ex2.style.background = '#5d5';
+ex2.style.color = '#090';
+}
+else if(o.value =='Orange') {
+ex2.style.background = '#F83';
+ex2.style.color = '#800';
+}
+ex2.WheelPicker.reloadAll();
+}
+</script>
+
+<div class="en-us">
+<div class="article">
+<h3>Scripting</h3>
+<p>
+You might ask how to get its value. <br>
+But don't worry. <br>
+Just do as you do with SELECT tag. <br>
+Even onchange event also triggers when its value changes. <br>
+<br>
+When it comes to changing OPTIONs, you have to execute a single command like this: <br>
+</p>
+<pre>
+[WheelPicker DOM].WheelPicker.reloadAll();
+</pre>
+<p>
+Let's see in action. 
+</p>
+</div>
+</div>
+
+<div class="ko-kr">
+<div class="article">
+<h3>스크립트 사용법</h3>
+<p>
+자바스크립트로 값을 가져오고 싶다면 어려울 것 없습니다. <br>
+그냥 다른 SELECT 에서 하던대로 하면 됩니다. <br>
+onchange 이벤트도 예상하는대로 작동할 겁니다. <br>
+<br>
+다만, OPTION 내용을 수정하는 경우에는 다음과 같은 함수 호출이 필요합니다: <br>
+</p>
+<pre>
+[WheelPicker DOM].WheelPicker.reloadAll();
+</pre>
+<p>
+예시를 보도록 하겠습니다. 
+</p>
+</div>
+</div>
+
+<div class="ja-jp">
+<div class="article">
+<h3>スクリプトの使い方</h3>
+<p>
+JavaScriptで値を取得したい場合は難しいことはありません。 <br>
+ただ他のSELECTでやったようにすればいいです。 <br>
+onchangeイベントも期待どおりに機能します。 <br>
+<br>
+ただし、OPTION 内容を変更する場合には、次のような関数呼び出しが必要です。 <br>
+</p>
+<pre>
+[WheelPicker DOM].WheelPicker.reloadAll();
+</pre>
+<p>
+例を見てみましょう。
+</p>
+</div>
+</div>
+
+<div id="ex3" class="WheelPicker">
+<select onchange="changed(this)">
+<option>Change This</option>
+<option>Alphabet</option>
+<option>Numeric</option>
+</select>
+<select>
+<option id="A"></option>
+<option id="B"></option>
+<option id="C"></option>
+</select>
+</div>
+<script>
+function changed(o) {
+if(o.value =='Alphabet') {
+A.innerText='A';
+B.innerText='B';
+C.innerText='C';
+}
+else if(o.value =='Numeric') {
+A.innerText='1';
+B.innerText='2';
+C.innerText='3';
+}
+else {
+A.innerText='';
+B.innerText='';
+C.innerText='';
+}
+ex3.WheelPicker.reloadAll();
+}
+</script>
+
+<div class="en-us">
+<div class="article">
+<h3>Features TBD</h3>
+<p>
+Some features you expect might missing at this point. <br>
+"disabled" attribute, "multiple" attribute, keyboard selecting etc. <br>
+If you have an idea to make it better, feel free to contact me. <br>
+And any contributions are welcome. <br>
+</p>
+</div>
+</div>
+
+<div class="ko-kr">
+<div class="article">
+<h3>추후에 추가될 기능</h3>
+<p>
+아직 기대하는 모든 기능이 다 있지 않을 겁니다. <br>
+"disabled" 속성, "multiple" 속성, 키보드 조작 등. <br>
+개선할 점이나 참신한 아이디어가 있다면 부담없이 알려주세요. <br>
+또, 기여는 언제나 환영입니다. <br>
+</p>
+</div>
+</div>
+
+<div class="ja-jp">
+<div class="article">
+<h3>後で追加する機能</h3>
+<p>
+まだ期待しているすべての機能がありません。 <br>
+「disabled」属性、「multiple」属性、キーボード操作など。 <br>
+改善する点や斬新なアイデアがある場合は、お気軽にお知らせください。 <br>
+また、貢献はいつも歓迎です。 <br>
+</p>
+</div>
+</div>
+
+
+<script>
+function language(s) {
+let n = document.getElementsByClassName("en-us");
+let z = n.length;
+for(let i = 0; i < z; i++) n[i].style.display = 'none';
+n = document.getElementsByClassName("ko-kr");
+z = n.length;
+for(let i = 0; i < z; i++) n[i].style.display = 'none';
+n = document.getElementsByClassName("ja-jp");
+z = n.length;
+for(let i = 0; i < z; i++) n[i].style.display = 'none';
+n = document.getElementsByClassName(s);
+z = n.length;
+for(let i = 0; i < z; i++) n[i].style.display = 'block';
+}
+window.onload=function(){
+language("en-us");
+setTimeout(function(){
+ex1.WheelPicker.reloadAll();
+ex2.WheelPicker.reloadAll();
+ex3.WheelPicker.reloadAll();
+}, 1000);
+setTimeout(function(){
+ex1.WheelPicker.reloadAll();
+ex2.WheelPicker.reloadAll();
+ex3.WheelPicker.reloadAll();
+}, 3000);
+setTimeout(function(){
+ex1.WheelPicker.reloadAll();
+ex2.WheelPicker.reloadAll();
+ex3.WheelPicker.reloadAll();
+}, 9000);
+}
+</script>

@@ -1,28 +1,30 @@
-# LixfloraPicker
-Apple-Style Picker to your web
+# WheelPicker
+WheelPicker is web-based UI project that improves consistent experiencing of selecting options between various platforms.
+It interacts with user by various ways: flicking, clicking and even scrolling.
+Reading this document, you will find out how easy it is to apply this beautiful UI to your projects.
 
 <img src="./screenshot.gif" width="220">
 
-# How to apply
-1. Inject the script to you project
-2. Make a div whose height is 160px and class is LixfloraPicker
-3. Make your own select objects inside the div
-4. Execute the function: LixfloraPickerStart();
+# How to apply?
+If you know some basic HTML tags, you don't have to study new things at all.
+All you have to do is making a new DIV object that contains your SELECT object.
+Then name the DIV's className as "WheelPicker".
+That's it!
 
-# Example
-See "sample.htm" file
+# Practical Example
+[Demo Page](https://jinho-dev.github.io/sample.htm)
 
 # Version History
 * v1.0 (2022.11.20)
 > Uploaded to GitHub. 
 
 # Credit
-* https://github.com/JinHo-Dev/LixfloraPicker
+* https://github.com/JinHo-Dev/WheelPicker
 
 # License
 GPLv3
 
-&copy;<a href="https://github.com/JinHo-Dev/">JinHo-Dev(Lixflora)</a>
+&copy;<a href="https://github.com/JinHo-Dev/">JinHo-Dev</a>
 
 # Contact
 ### e-mail
