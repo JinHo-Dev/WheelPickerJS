@@ -3,7 +3,7 @@ WheelPicker is web-based UI project that improves consistent experiencing of sel
 It interacts with user by various ways: flicking, clicking and even scrolling.
 Reading this document, you will find out how easy it is to apply this beautiful UI to your projects.
 
-<img src="./screenshot.gif" width="220">
+<img src="sample/screenshot.gif" width="220">
 
 # How to apply?
 If you know some basic HTML tags, you don't have to study new things at all.
