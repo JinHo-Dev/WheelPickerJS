@@ -24,7 +24,7 @@ That's it!
 # License
 GPLv3
 
-&copy;<a href="https://github.com/JinHo-Dev/">JinHo-Dev(Lixflora)</a>
+&copy;<a href="https://github.com/JinHo-Dev/">JinHo-Dev</a>
 
 # Contact
 ### e-mail
