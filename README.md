@@ -5,15 +5,13 @@ Reading this document, you will find out how easy it is to apply this beautiful 
 
 <img src="sample/screenshot.gif" width="220">
 
+[**See Demo Page**](https://jinho-dev.github.io/wheelpicker)
+
 # How to apply?
 If you know some basic HTML tags, you don't have to study new things at all.
 All you have to do is making a new DIV object that contains your SELECT object.
 Then name the DIV's className as "WheelPicker".
 That's it!
-
-# Practical Example
-[Demo Page](https://jinho-dev.github.io/sample.htm)
-
 # Version History
 * v1.0 (2022.11.20)
 > Uploaded to GitHub. 
