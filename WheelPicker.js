@@ -1,4 +1,5 @@
-﻿
+﻿let WheelPickerPreset = {};
+
 class WheelPicker {
     drawAll() {
         for(let i = 0; i < this.lists.length; i++) {
@@ -462,9 +463,12 @@ async function WheelPickerStart() {
     let doms = document.querySelectorAll(".WheelPicker");
     for(let i = 0; i < doms.length; i++) {
         if(doms[i].WheelPicker) continue;
+        if(doms[i].hasAttribute("preset")) {
+            doms[i].innerHTML = WheelPickerPreset[doms[i].getAttribute("preset")];
+        }
         let options = doms[i].querySelectorAll("option");
         let str = "";
-        for(let i = 0; i < doms.length; i++) {
+        for(let i = 0; i < options.length; i++) {
             str += options[i].innerText;
         }
         doms[i].innerHTML += `<font style='position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;'>${str}</font>`;
@@ -479,6 +483,7 @@ async function WheelPickerStart() {
     }
     let activeObj;
     if(!eventAvailable) {
+        eventAvailable = true;
         window.addEventListener("mousedown", function(e) {
             let o = e.target.closest("div");
             if(o && o.className=="WheelPicker") {
