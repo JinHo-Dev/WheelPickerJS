@@ -457,66 +457,71 @@ class WheelPicker {
     }
 };
 
+let eventAvailable = false;
 async function WheelPickerStart() {
     let doms = document.querySelectorAll(".WheelPicker");
     for(let i = 0; i < doms.length; i++) {
+        if(doms[i].WheelPicker) continue;
         doms[i].innerHTML += "<font style='position:absolute;'>&nbsp;</font>";
     }
     if(document.fonts) {
         await document.fonts.ready;
     }
     for(let i = 0; i < doms.length; i++) {
+        if(doms[i].WheelPicker) continue;
         new WheelPicker(doms[i]);
     }
     let activeObj;
-    window.addEventListener("mousedown", function(e) {
-        let o = e.target.closest("div");
-        if(o && o.className=="WheelPicker") {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj = o.WheelPicker;
-            activeObj.pointerStart(e.clientX, e.clientY);
-        }
-    });
-    window.addEventListener("touchstart", function(e) {
-        let o = e.target.closest("div");
-        if(o && o.className=="WheelPicker") {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj = o.WheelPicker;
-            activeObj.pointerStart(e.touches[0].clientX, e.touches[0].clientY);
-        }
-    }, { passive: false });
-    window.addEventListener("mousemove", function(e) {
-        if(activeObj != null) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj.pointerMove(e.clientX, e.clientY);
-        }
-    });
-    window.addEventListener("touchmove", function(e) {
-        if(activeObj != null) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj.pointerMove(e.touches[0].clientX, e.touches[0].clientY);
-        }
-    }, { passive: false });
-    window.addEventListener("mouseup", function(e) {
-        if(activeObj != null) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj.pointerEnd();
-            activeObj = null;
-        }
-    });
-    window.addEventListener("touchend", function(e) {
-        if(activeObj != null) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj.pointerEnd();
-            activeObj = null;
-        }
-    });
+    if(!eventAvailable) {
+        window.addEventListener("mousedown", function(e) {
+            let o = e.target.closest("div");
+            if(o && o.className=="WheelPicker") {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj = o.WheelPicker;
+                activeObj.pointerStart(e.clientX, e.clientY);
+            }
+        });
+        window.addEventListener("touchstart", function(e) {
+            let o = e.target.closest("div");
+            if(o && o.className=="WheelPicker") {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj = o.WheelPicker;
+                activeObj.pointerStart(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: false });
+        window.addEventListener("mousemove", function(e) {
+            if(activeObj != null) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj.pointerMove(e.clientX, e.clientY);
+            }
+        });
+        window.addEventListener("touchmove", function(e) {
+            if(activeObj != null) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj.pointerMove(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: false });
+        window.addEventListener("mouseup", function(e) {
+            if(activeObj != null) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj.pointerEnd();
+                activeObj = null;
+            }
+        });
+        window.addEventListener("touchend", function(e) {
+            if(activeObj != null) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj.pointerEnd();
+                activeObj = null;
+            }
+        });
+    }
 }
 
 window.addEventListener("load", WheelPickerStart, false);
