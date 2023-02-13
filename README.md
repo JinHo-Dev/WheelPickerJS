@@ -12,6 +12,7 @@ If you know some basic HTML tags, you don't have to study new things at all. \
 All you have to do is making a new DIV object that contains your SELECT object. \
 Then name the DIV's className as "WheelPicker". \
 That's it! 
+
 # Version History
 > v1.0 (2022.11.20) \
 Uploaded to GitHub. 
