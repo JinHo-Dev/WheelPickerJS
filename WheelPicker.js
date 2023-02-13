@@ -462,13 +462,19 @@ async function WheelPickerStart() {
     let doms = document.querySelectorAll(".WheelPicker");
     for(let i = 0; i < doms.length; i++) {
         if(doms[i].WheelPicker) continue;
-        doms[i].innerHTML += "<font style='position:absolute;'>&nbsp;</font>";
+        let options = doms[i].querySelectorAll("option");
+        let str = "";
+        for(let i = 0; i < doms.length; i++) {
+            str += options[i].innerText;
+        }
+        doms[i].innerHTML += `<font style='position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;'>${str}</font>`;
     }
     if(document.fonts) {
         await document.fonts.ready;
     }
     for(let i = 0; i < doms.length; i++) {
         if(doms[i].WheelPicker) continue;
+        doms[i].removeChild(doms[i].querySelector("font"));
         new WheelPicker(doms[i]);
     }
     let activeObj;
