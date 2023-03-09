@@ -1,4 +1,5 @@
-﻿
+﻿let WheelPickerPreset = {};
+
 class WheelPicker {
     drawAll() {
         for(let i = 0; i < this.lists.length; i++) {
@@ -457,66 +458,81 @@ class WheelPicker {
     }
 };
 
+let eventAvailable = false;
 async function WheelPickerStart() {
     let doms = document.querySelectorAll(".WheelPicker");
     for(let i = 0; i < doms.length; i++) {
-        doms[i].innerHTML += "<font style='position:absolute;'>&nbsp;</font>";
+        if(doms[i].WheelPicker) continue;
+        if(doms[i].hasAttribute("preset")) {
+            doms[i].innerHTML = WheelPickerPreset[doms[i].getAttribute("preset")];
+        }
+        let options = doms[i].querySelectorAll("option");
+        let str = "";
+        for(let i = 0; i < options.length; i++) {
+            str += options[i].innerText;
+        }
+        doms[i].innerHTML += `<font style='position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;'>${str}</font>`;
     }
     if(document.fonts) {
         await document.fonts.ready;
     }
     for(let i = 0; i < doms.length; i++) {
+        if(doms[i].WheelPicker) continue;
+        doms[i].removeChild(doms[i].querySelector("font"));
         new WheelPicker(doms[i]);
     }
     let activeObj;
-    window.addEventListener("mousedown", function(e) {
-        let o = e.target.closest("div");
-        if(o && o.className=="WheelPicker") {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj = o.WheelPicker;
-            activeObj.pointerStart(e.clientX, e.clientY);
-        }
-    });
-    window.addEventListener("touchstart", function(e) {
-        let o = e.target.closest("div");
-        if(o && o.className=="WheelPicker") {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj = o.WheelPicker;
-            activeObj.pointerStart(e.touches[0].clientX, e.touches[0].clientY);
-        }
-    }, { passive: false });
-    window.addEventListener("mousemove", function(e) {
-        if(activeObj != null) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj.pointerMove(e.clientX, e.clientY);
-        }
-    });
-    window.addEventListener("touchmove", function(e) {
-        if(activeObj != null) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj.pointerMove(e.touches[0].clientX, e.touches[0].clientY);
-        }
-    }, { passive: false });
-    window.addEventListener("mouseup", function(e) {
-        if(activeObj != null) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj.pointerEnd();
-            activeObj = null;
-        }
-    });
-    window.addEventListener("touchend", function(e) {
-        if(activeObj != null) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            activeObj.pointerEnd();
-            activeObj = null;
-        }
-    });
+    if(!eventAvailable) {
+        eventAvailable = true;
+        window.addEventListener("mousedown", function(e) {
+            let o = e.target.closest("div");
+            if(o && o.className=="WheelPicker") {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj = o.WheelPicker;
+                activeObj.pointerStart(e.clientX, e.clientY);
+            }
+        });
+        window.addEventListener("touchstart", function(e) {
+            let o = e.target.closest("div");
+            if(o && o.className=="WheelPicker") {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj = o.WheelPicker;
+                activeObj.pointerStart(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: false });
+        window.addEventListener("mousemove", function(e) {
+            if(activeObj != null) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj.pointerMove(e.clientX, e.clientY);
+            }
+        });
+        window.addEventListener("touchmove", function(e) {
+            if(activeObj != null) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj.pointerMove(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: false });
+        window.addEventListener("mouseup", function(e) {
+            if(activeObj != null) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj.pointerEnd();
+                activeObj = null;
+            }
+        });
+        window.addEventListener("touchend", function(e) {
+            if(activeObj != null) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                activeObj.pointerEnd();
+                activeObj = null;
+            }
+        });
+    }
 }
 
 window.addEventListener("load", WheelPickerStart, false);

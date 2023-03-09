@@ -1,4 +1,5 @@
-﻿<script src="../WheelPicker.min.js"></script>
+﻿<script src="../WheelPicker.js"></script>
+<script src="../WheelPickerPreset.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&family=Noto+Sans+KR:wght@500;700&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
@@ -54,7 +55,7 @@ background: #FFF;
 box-shadow: 0px 10px 30px rgba(0, 0, 10, 0.16);
 }
 #gitLink > img {
-padding: 9px;
+padding: 4px;
 }
 .article {
 padding: 30px;
@@ -70,21 +71,21 @@ font-size: 19px;
 </style>
 
 <div class="en-us">
-<center><h1>Hello, WheelPicker</h1></center>
-<center><h3>Quick Guide to WheelPicker, somehow Familiar Picker UI</h3></center>
+<center><h1>Hello, WheelPickerJS</h1></center>
+<center><h3>Quick Guide to WheelPickerJS, somehow Familiar Picker UI</h3></center>
 </div>
 
 <div class="ko-kr">
-<center><h1>WheelPicker 사용 설명서</h1></center>
+<center><h1>WheelPickerJS 사용 설명서</h1></center>
 <center><h3>어딘가 익숙해보이는 선택상자 UI를 만드는 방법을 알아봅시다</h3></center>
 </div>
 
 <div class="ja-jp">
-<center><h1>WheelPickerユーザーマニュアル</h1></center>
+<center><h1>WheelPickerJS ユーザーマニュアル</h1></center>
 <center><h3>どこかに慣れている選択ボックスUIを作成する方法を学びましょう。</h3></center>
 </div>
 
-<div id="gitLink" onclick="window.open('https://github.com/JinHo-Dev/WheelPicker');"><img src="github.svg">JinHo-Dev/ WheelPicker</div>
+<div id="gitLink" onclick="window.open('https://github.com/JinHo-Dev/WheelPickerJS');"><img src="github.svg">JinHo-Dev/WheelPickerJS</div>
 
 <center>
 <div id="ex1" class="WheelPicker">
@@ -94,6 +95,10 @@ font-size: 19px;
 <option value="ja-jp">日本語</option>
 </select>
 </div>
+</center>
+
+<center>
+<div class="WheelPicker" preset="date"></div>
 </center>
 
 <div class="en-us">
@@ -442,22 +447,5 @@ n = document.getElementsByClassName(s);
 z = n.length;
 for(let i = 0; i < z; i++) n[i].style.display = 'block';
 }
-window.onload=function(){
 language("en-us");
-setTimeout(function(){
-ex1.WheelPicker.reloadAll();
-ex2.WheelPicker.reloadAll();
-ex3.WheelPicker.reloadAll();
-}, 1000);
-setTimeout(function(){
-ex1.WheelPicker.reloadAll();
-ex2.WheelPicker.reloadAll();
-ex3.WheelPicker.reloadAll();
-}, 3000);
-setTimeout(function(){
-ex1.WheelPicker.reloadAll();
-ex2.WheelPicker.reloadAll();
-ex3.WheelPicker.reloadAll();
-}, 9000);
-}
 </script>
