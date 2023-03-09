@@ -1,5 +1,5 @@
-# WheelPicker
-WheelPicker is web-based UI project that improves consistent experiencing of selecting options between various platforms. \
+# WheelPickerJS
+WheelPickerJS is web-based UI project that improves consistent experiencing of selecting options between various platforms. \
 It interacts with user by various ways: flicking, clicking and even scrolling. \
 Reading this document, you will find out how easy it is to apply this beautiful UI to your projects. 
 
